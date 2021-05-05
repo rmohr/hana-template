@@ -1,0 +1,92 @@
+---
+apiVersion: v1
+kind: Template
+metadata:
+  annotations:
+    description: SAP HANA template
+    tags: kubevirt,ocp,template,linux,virtualmachine,sap,hana
+  labels:
+    kubevirt.io/os: rhel8
+  name: vm-template-sap-hana
+objects:
+- apiVersion: kubevirt.io/v1
+  kind: VirtualMachine
+  metadata:
+    labels:
+      kubevirt.io/vm: vm-${NAME}
+    name: ${NAME}
+  spec:
+    running: true
+    template:
+      metadata:
+        labels:
+          kubevirt.io/vm: vm-${NAME}
+      spec:
+        domain:
+          ioThreadsPolicy: auto
+          cpu:
+            model: host-passthrough
+            isolateEmulatorThread: true
+            dedicatedCpuPlacement: true
+            features:
+              - name: "invtsc"
+                policy: "require"
+          devices:
+            blockMultiQueue: true
+            disks:
+            - disk:
+                bus: virtio
+              dedicatedIOThread: true
+              name: containerdisk
+            - disk:
+                bus: virtio
+              name: cloudinitdisk
+            - disk:
+                bus: virtio
+              name: emptydisk
+            interfaces:
+            - masquerade: {}
+              name: default
+            - name: sriov-net
+              sriov: {}
+          machine:
+            type: ""
+          resources:
+            limits:
+              cpu: ${CPU_CORES}
+              memory: ${MEMORY}
+        terminationGracePeriodSeconds: 0
+        volumes:
+        - containerDisk:
+            image: ${CONTAINER_DISK}
+          name: containerdisk
+        - cloudInitNoCloud:
+            userData: |-
+              #cloud-config
+              password: admin
+              chpasswd: { expire: False }
+          name: cloudinitdisk
+        - emptyDisk:
+            capacity: 2Gi
+          name: emptydisk
+        networks:
+        - name: default
+          pod: {}
+        - multus:
+            networkName: ${SRIOV_NETWORK_NAME}
+          name: sriov-net
+parameters:
+- description: Name for the new VM
+  name: NAME
+- description: Amount of memory
+  name: MEMORY
+  value: 4096Mi
+- description: Amount of cores
+  name: CPU_CORES
+  value: "4"
+- description: Name of the rhel8 container disk
+  name: CONTAINER_DISK
+  value: "quay.io/kubevirt/fedora-cloud-container-disk-demo"
+- description: Name of the sriov network
+  name: SRIOV_NETWORK_NAME
+  value: "default/sriov-net"
