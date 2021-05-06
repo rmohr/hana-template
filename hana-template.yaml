@@ -33,6 +33,7 @@ objects:
                 policy: "require"
           devices:
             blockMultiQueue: true
+            networkInterfaceMultiqueue: true
             disks:
             - disk:
                 bus: virtio
