@@ -52,9 +52,15 @@ objects:
           machine:
             type: ""
           resources:
+            requests:
+              cpu: ${CPU_CORES}
+              memory: ${MEMORY}
             limits:
               cpu: ${CPU_CORES}
               memory: ${MEMORY}
+          memory:
+            hugepages:
+              pageSize: ${HUGEPAGES_PAGE_SIZE}
         terminationGracePeriodSeconds: 0
         volumes:
         - containerDisk:
@@ -90,3 +96,6 @@ parameters:
 - description: Name of the sriov network
   name: SRIOV_NETWORK_NAME
   value: "default/sriov-net"
+- description: Page size of huge pages
+  name: HUGEPAGES_PAGE_SIZE
+  value: "1Gi"
