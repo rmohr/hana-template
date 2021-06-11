@@ -10,6 +10,8 @@ metadata:
   name: vm-template-sap-hana
 objects:
 - apiVersion: kubevirt.io/v1
+  kind  
+- apiVersion: kubevirt.io/v1
   kind: VirtualMachine
   metadata:
     labels:
@@ -25,6 +27,8 @@ objects:
         domain:
           ioThreadsPolicy: auto
           cpu:
+            sockets: 1
+            threads: 1
             model: host-passthrough
             isolateEmulatorThread: true
             dedicatedCpuPlacement: true
