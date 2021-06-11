@@ -22,8 +22,11 @@ objects:
     template:
       metadata:
         labels:
+          subdomain: ansible
           kubevirt.io/vm: vm-${NAME}
       spec:
+        hostname: ${NAME}
+        subdomain: ansible
         domain:
           ioThreadsPolicy: auto
           cpu:
