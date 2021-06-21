@@ -26,7 +26,7 @@ make cluster-up
 You can now access the clusteer:
 
 ```bash
-cluster-up/kubect.sh get pods
+cluster-up/kubectl.sh get pods
 ```
 
 You can also export the KUBECONFIG to use the cluster with your local installed tools:
