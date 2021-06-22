@@ -81,7 +81,7 @@ kubectl create -f https://raw.githubusercontent.com/rmohr/jumppod/main/manifests
 Allow your ssh key access and forward a port:
 
 ```bash
-kubectl create configmap authorized-keys --from-file=${HOME}/.ssh/id_rsa.pub
+kubectl create configmap authorized-keys --from-file=authorized_keys=${HOME}/.ssh/id_rsa.pub
 kubectl port-forward svc/sshd 2222:22 &
 ```
 
