@@ -10,8 +10,6 @@ metadata:
   name: vm-template-sap-hana
 objects:
 - apiVersion: kubevirt.io/v1
-  kind  
-- apiVersion: kubevirt.io/v1
   kind: VirtualMachine
   metadata:
     labels:
