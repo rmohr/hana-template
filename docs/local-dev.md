@@ -42,7 +42,7 @@ Now install the latest developer build of kubevirt which should always work with
 ```bash
 LATEST=$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/latest)
 kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-operator.yaml
-kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-cr.yaml
+kubectl apply -f https://raw.githubusercontent.com/rmohr/hana-template/main/kubevirt-cr.yaml # note that we deploy the CR from this repo with all necessary feature gates enabled
 kubectl -n kubevirt wait kv kubevirt --for condition=Available --timeout 15m # speed depens on container pull speed
 ```
 
