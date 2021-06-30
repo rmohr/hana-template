@@ -36,6 +36,8 @@ objects:
             features:
               - name: "invtsc"
                 policy: "require"
+            numa:
+              guestMappingPassthrough : {}
           devices:
             blockMultiQueue: true
             networkInterfaceMultiqueue: true
