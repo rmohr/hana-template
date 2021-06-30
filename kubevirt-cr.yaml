@@ -10,3 +10,4 @@ spec:
         - LiveMigration
         - CPUManager
         - NUMA
+        - DownwardMetrics
