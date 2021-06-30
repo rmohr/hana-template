@@ -39,12 +39,36 @@ kubectl get pods --all-namespaces
 
 Now install the latest developer build of kubevirt which should always work with the template (https://kubevirt.io/user-guide/operations/installation/#installing-the-daily-developer-builds):
 
+
+## Deploy kubevirt developer builds on vanilla kubernetes
+
 ```bash
 LATEST=$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/latest)
 kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-operator.yaml
 kubectl apply -f https://raw.githubusercontent.com/rmohr/hana-template/main/kubevirt-cr.yaml # note that we deploy the CR from this repo with all necessary feature gates enabled
 kubectl -n kubevirt wait kv kubevirt --for condition=Available --timeout 15m # speed depens on container pull speed
 ```
+
+## Deploy kubevirt developer builds on openshift, replacing kubevirt from openshift virtualization
+
+Note: this will confuse openshift virtualization and is only intended for development.
+
+First scale down OLM and HCO. Then delete the `kubevirt-config` configmap:
+
+```bash
+oc delete cm -n openshift-cnv kubevirt-config
+```
+
+Then deploy kubevirt with a config similar to openshift virtualization:
+
+```bash
+LATEST=$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/latest)
+curl https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-operator.yaml | sed "s/namespace: kubevirt/namespace: openshift-cnv/" | oc apply -f -
+oc apply -f https://raw.githubusercontent.com/rmohr/hana-template/main/kubevirt-cr-openshift.yaml # note that we deploy the CR from this repo with all necessary feature gates enabled
+oc -n openshift-cnv wait kv kubevirt --for condition=Available --timeout 15m # speed depens on container pull speed
+```
+
+## Start the VM from the template
 
 Now render the template locally and deploy it to the cluster:
 

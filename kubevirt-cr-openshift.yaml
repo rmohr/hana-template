@@ -1,0 +1,23 @@
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: openshift-cnv
+spec:
+  configuration:
+    machineType: pc-q35-rhel8.3.0
+    network:
+      defaultNetworkInterface: masquerade
+    migrations:
+      disableTLS: true
+    developerConfiguration: 
+      featureGates:
+        - LiveMigration
+        - CPUManager
+        - NUMA
+        - DownwardMetrics
+        - SRIOV
+        - SRIOVLiveMigration
+        - CPUNodeDiscovery
+        - Snapshot
+        - HostDisk
