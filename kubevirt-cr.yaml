@@ -5,6 +5,8 @@ metadata:
   namespace: kubevirt
 spec:
   configuration:
+    migrations:
+      disableTLS: true
     developerConfiguration: 
       featureGates:
         - LiveMigration
