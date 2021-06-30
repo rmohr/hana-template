@@ -52,6 +52,9 @@ objects:
             - disk:
                 bus: virtio
               name: emptydisk
+            - disk:
+                bus: virtio
+              name: downwardmetrics
             interfaces:
             - masquerade: {}
               name: default
@@ -89,6 +92,8 @@ objects:
         - multus:
             networkName: ${SRIOV_NETWORK_NAME}
           name: sriov-net
+        - downwardMetrics: {}
+          name: downwardmetrics
 parameters:
 - description: Name for the new VM
   name: NAME
