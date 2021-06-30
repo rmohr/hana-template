@@ -28,8 +28,6 @@ objects:
         domain:
           ioThreadsPolicy: auto
           cpu:
-            sockets: 1
-            threads: 1
             model: host-passthrough
             isolateEmulatorThread: true
             dedicatedCpuPlacement: true
@@ -86,14 +84,14 @@ objects:
         - emptyDisk:
             capacity: 2Gi
           name: emptydisk
+        - downwardMetrics: {}
+          name: downwardmetrics
         networks:
         - name: default
           pod: {}
         - multus:
             networkName: ${SRIOV_NETWORK_NAME}
           name: sriov-net
-        - downwardMetrics: {}
-          name: downwardmetrics
 parameters:
 - description: Name for the new VM
   name: NAME
